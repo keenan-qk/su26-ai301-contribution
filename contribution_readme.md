@@ -1,15 +1,15 @@
-# Contribution [#]: [Issue Title]
+# Contribution [1]: [Setup CI to use Flight Recorder]
 
-**Contribution Number:** [1 / 2 / 3]  
-**Student:** [Your Name]  
-**Issue:** [GitHub issue link]  
-**Status:** [Phase I / Phase II / Phase III / Phase IV] [In Progress / Complete]
+**Contribution Number:** [1]  
+**Student:** [Keenan Kornegay]  
+**Issue:** [Setup CI to use Flight Recorder]  
+**Status:** [Phase I] [In Progress]
 
 ---
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs explaining why this issue interests you, how it matches your skills/learning goals, what you hope to learn]
+This issue interests me, because I've been interested in brushing up on my C and C++ to contribute to real world issues. Unit testing and continuous integration testing is also something that I wanted to learn more about. By now, I have enough experience in Github, C, and C++ to tackle an issue such as this. I'm also eager to learn more about the Github ecosystem, how to contribute to open source projects, and to learn more about CI testing. In addition, as someone who has always an interest in aviation and flight, I like the 'flight recorder' analogy.
 
 ---
 
@@ -17,15 +17,15 @@
 
 ### Problem Description
 
-[In your own words, what's broken or missing?]
+Currently, for pull requests there does not exist a simple "vanilla" use test. I.e., a compile test that checks to see if Pony simply compliles successfully. In addition, we want flight recorder, a runtime test that logs events, to be used for all stress tests. Flight recorder should also be output in stdout or stderr. 
 
 ### Expected Behavior
 
-[What should happen?]
+When we run a program in Pony, there should be a message in stdout or stderr that our program ran successfully.
 
 ### Current Behavior
 
-[What actually happens?]
+Currently, there are use tests to check for various things but nothing for a vanilla, "It runs." 
 
 ### Affected Components
 
