@@ -3,7 +3,7 @@
 **Contribution Number:** [1]  
 **Student:** [Keenan Kornegay]  
 **Issue:** [Setup CI to use Flight Recorder]  
-**Status:** [Phase I] [In Progress]
+**Status:** [Phase I] [Complete]
 
 ---
 
