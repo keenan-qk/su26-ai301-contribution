@@ -37,19 +37,43 @@ Currently, there are use tests to check for various things but nothing for a van
 
 ### Environment Setup
 
-[Notes on setting up your local development environment - challenges you faced, how you solved them]
+Since I was working from a fresh Linux Mint install, I had to first install Git, and then log into Github from terminal. 
+Then I had to install some dependencies, Clang, including Cmake. I also had to clone the Ponyc repository to my machine. 
 
 ### Steps to Reproduce
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. I had to locate the existing runtime tracing uset test. 
+2. Then I had to verify that the workflow matrix contained "directives: runtime_tracing".
+3. I verified that the workflow invokes the build: 
+    make configure arch=x86-64 config=debug use=${{ matrix.directives }}
+    make build config=debug
+    make test-ci-core config=debug usedebugger=lldb test_full_program_timeout=120
 
+4. Confirmed that runtime_tracing is a valid Makefile use option
+5. Built Pony with runtime tracing enabled:
+    make libs
+    make configure arch=x86-64 config=debug use=runtime_tracing
+    make build config=debug
+6. Ran the same test on a release version:
+    make configure arch=x86-64 config=release use=runtime_tracing
+    make build config=release
+    make test-ci-core config=release usedebugger=lldb
+7. The test ran successfully and I found that the flight recorder ran in:
+    src/libponyrt/tracing/tracing.c
+    src/libponyrt/tracing/tracing.h
+    src/libponyrt/sched/start.c
+
+    And the flight recorder is directed to:
+      stdout  (--ponytracingoutput -)
+      stderr  (--ponytracingoutput ~)
 ### Reproduction Evidence
 
 - **Commit showing reproduction:** [Link to commit in your fork]
 - **Screenshots/logs:** [If applicable]
-- **My findings:** [What you discovered during reproduction]
+- <img width="819" height="190" alt="image" src="https://github.com/user-attachments/assets/4c099102-9f63-4dd1-a00e-65463c7bcbc5" />
+<img width="496" height="189" alt="image" src="https://github.com/user-attachments/assets/ecc6ec82-90c4-49ff-93e5-c9e80925dba0" />
+
+- **My findings:** I found that flight recorder is not a separate use= directive, and is in fact, a runtime tracing mode.
 
 ---
 
@@ -57,30 +81,45 @@ Currently, there are use tests to check for various things but nothing for a van
 
 ### Analysis
 
-[Your analysis of the root cause - what's causing the issue?]
+CI is organized around a runtime_tracing use test, while flight recorder functionality has not been integrated into the primary testing workflows. This means flight recorder diagnostics are being prevented from being collected during normal tests. 
 
 ### Proposed Solution
 
-[High-level description of your fix approach]
+Flight recorder needs to be integrated into primary CI test paths, runtime_tracing use test needs to be replaced with a vanilla use test, and surface tracing diagnostics need to be added through CI logs. 
 
 ### Implementation Plan
 
 Using UMPIRE framework (adapted):
 
-**Understand:** [Restate the problem]
+**Understand:** The current CI configuration validates runtime tracing through a dedicated runtime_tracing use test. Flight recorder functionality has been added to runtime tracing, and the goal is to exercise flight recorder in the primary PR and stress-test workflows while preserving compilation coverage through a new vanilla use test.
 
-**Match:** [What similar patterns/solutions exist in the codebase?]
+**Match:** Investigated .github/workflows/ponyc-weekly-checks.yml and found the existing runtime_tracing use test.
+
+Investigated Makefile and confirmed runtime_tracing is enabled through use=runtime_tracing.
+
+Investigated src/libponyrt/sched/start.c and src/libponyrt/tracing/tracing.c and found that flight recorder is enabled through:
 
 **Plan:** [Step-by-step implementation plan]
-1. [Modify file X to do Y]
-2. [Add function Z]
-3. [Update tests]
+1. Identify the primary PR test workflows and stress-test workflows that should run with runtime tracing enabled.
+2. Configure those workflows to run with flight recorder mode enabled and direct output to CI logs.
+3. Remove the dedicated runtime_tracing use test from ponyc-weekly-checks.yml.
+4. Add a vanilla use test that performs compilation without any use= directives.
+5. Verify that debugger-based test execution remains unchanged. 
+6. Run relevant CI tests and validate flight recorder output appears in logs. 
 
 **Implement:** [Link to your branch/commits as you work]
+https://github.com/keenan-qk/ponyc-su26-ai301/tree/issue-4702-flight-recorder
 
-**Review:** [Self-review checklist - does it follow the project's contribution guidelines?]
+Flight recorder enabled in intended CI workflows.
+ Runtime tracing functionality still exercised.
+ Dedicated runtime_tracing use test removed.
+ Vanilla use test added.
+ Debugger-based tests unchanged.
+ CI configuration follows project conventions.
 
-**Evaluate:** [How will you verify it works?]
+**Review:** [Self-review checklist - does it follow the project's contribution guidelines?] 
+
+**Evaluate:** [How will you verify it works?] Run the existing runtime tracing build locally. Verify that the new vanilla test compiles successfully without any use= directives. 
 
 ---
 
