@@ -19,6 +19,8 @@ This issue interests me, because I've been interested in brushing up on my C and
 
 Currently, for pull requests there does not exist a simple "vanilla" use test. I.e., a compile test that checks to see if Pony simply compliles successfully. In addition, we want flight recorder, a runtime test that logs events, to be used for all stress tests. Flight recorder should also be output in stdout or stderr. 
 
+https://github.com/keenan-qk/ponyc-su26-ai301/tree/issue-4702-flight-recorder
+
 ### Expected Behavior
 
 When we run a program in Pony, there should be a message in stdout or stderr that our program ran successfully.
