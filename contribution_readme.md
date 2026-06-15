@@ -144,9 +144,30 @@ Flight recorder enabled in intended CI workflows.
 
 ## Implementation Notes
 
-### Week [X] Progress
+### Week [3] Progress
 
-[What you built this week, challenges faced, decisions made]
+## Reproduction 
+
+- Successfully reproduced the issue locally using: make test-ci-core config=debug usedebugger=lldb test_full_program_timeout=120.
+
+## Investigation 
+
+- Traced how usedebugger=lldb is passed from the Makefile into the full-program test runner
+- Located LLDB-specific exit code handling in test/full-program-runner/_tester.pony. 
+- Examined LLDB output:
+    - stop reason = breakpoint 1.1
+    - Process ... exited with status = 0
+ 
+## Candidate Fix
+
+- Updated LLDB fallback logic to look for stop reason = signal instead of any occurance of stop reason =
+- Rationale: breakpoint stops should not necessarily be treated as test failures, while signal-based stops may indicate an actual error condition. 
+
+## Current Status 
+
+- Fix committed and pushed to the issue branch
+- Need additional validation to confirm the change fully resolves the issue and does not introduce regressions.
+
 
 ### Week [Y] Progress
 
