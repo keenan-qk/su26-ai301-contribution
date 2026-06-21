@@ -169,14 +169,33 @@ Flight recorder enabled in intended CI workflows.
 - Need additional validation to confirm the change fully resolves the issue and does not introduce regressions.
 
 
-### Week [Y] Progress
+### Week [4] Progress
 
-[Continue documenting as you work]
+## Course Correction 
+
+I had made an error during my initial investigation of Issue #4702, as I had focused on reproducing the LLDB behavior and documenting the failure in the CI test environment. I had not realized until further analysis that I had spent the previous week validating the issue rather than implementing a fix. 
+
+Thus, I shifted from a process of reproduction to resolution. I analyzed the LLDB stop-reason handling logic in the flight recorder CI tests and identified that signal-related stop events were treated too broadly. I implemented a code change to handle LLDB signal stop reasons more precisely, allowing the test runner to distinguish between expected child-process signals and actual interruptions. 
+
+After making this change, I committed the update to my feature branch and began validating the fix using the project's CI test suite. This work moved the contribution from issue reproduction toward an actual code-level solution for the flight recorder testing issue. 
+
+## Candidate Fix 
+
+- I revisted the LLDB stop-reason handling logic in  test/full-program-running/_tester.pony
+- Updated the fallback logic to more precisely distinguish signal-based stosp from other LLDB stop reasons
+- Committed the implemenation to the issue-4702-flight-recorder branch
+- Continued validiation using the projects test suite
+
+## Current Status
+
+- Fix has been implemented and pushed to the issue branch.
+- Running additional tests to verify that the change resolves the Flight Recorder CI issue without introducing regressions.
+- Preparing evidence and documentation for final submission once validation is complete. 
 
 ### Code Changes
 
-- **Files modified:** [List]
-- **Key commits:** [Links to important commits]
+- **Files modified:** [[List]](https://github.com/keenan-qk/ponyc-su26-ai301/commit/709466af2c8911c8194c9daba08e229035837a09)
+- **Key commits:** [[Links to important commits]](https://github.com/keenan-qk/ponyc-su26-ai301/actions/runs/27888653777)
 - **Approach decisions:** [Why you chose certain approaches]
 
 ---
@@ -199,15 +218,15 @@ Flight recorder enabled in intended CI workflows.
 
 ### Technical Skills Gained
 
-[What you learned technically]
+I learned about continuous integration tests and how they are implemented. I also learned a bit more about the open-source economy and how to contribute to an open-source issue. 
 
 ### Challenges Overcome
 
-[What was hard and how you solved it]
+One challenge was identifying exactly what the issue was asking for. I had to re-read the issue and parse through it to really understand the steps I had to take to solve this issue. I had also made an error in confusing the scope of the issue. While focusing on the LLDB did help me in the end, it did not mean the issue was solved. 
 
 ### What I'd Do Differently Next Time
 
-[Reflection on your process]
+I would further self-verify what the issue was asking for. 
 
 ---
 
