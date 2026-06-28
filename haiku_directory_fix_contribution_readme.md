@@ -1,15 +1,15 @@
-# Contribution [#]: [Issue Title]
+# Contribution [#]: [miniupnpc reports wrong path for $includeDir]
 
-**Contribution Number:** [1 / 2 / 3]  
-**Student:** [Your Name]  
-**Issue:** [GitHub issue link]  
-**Status:** [Phase I / Phase II / Phase III / Phase IV] [In Progress / Complete]
+**Contribution Number:** [2]  
+**Student:** [Keenan Kornegay]  
+**Issue:** [[GitHub issue link](https://github.com/haikuports/haikuports/issues/13367)]  
+**Status:** [Phase I]
 
 ---
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs explaining why this issue interests you, how it matches your skills/learning goals, what you hope to learn]
+I chose this issue because I'm interested in operating systems! Lately I've been getting more into the Linux operating system and am fascinated by its open source environment. Its community-driven efforts I find to be inspiring. While this is firmly not within the Linux ecosystem of operating systems, Haiku's philosophy appears to be similar. Plus I am curious to learn a bit more about how operating systems work underneath the system. 
 
 ---
 
@@ -17,20 +17,23 @@
 
 ### Problem Description
 
-[In your own words, what's broken or missing?]
+The MiniUPnPc library generated CMake package file exports the wrong path for INTERFACE_INCLUDE_DIRECTORIES on the Haiku operating system. Haiku expects a different path, so users are not able to import the MiniUPnPc library using CMake. 
 
 ### Expected Behavior
 
-[What should happen?]
+Users should be able to import the MiniUPnPc library and should report the correct path for $includeDir.
 
 ### Current Behavior
 
-[What actually happens?]
+The MiniUPnPc library is not imported and the correct path is reported. 
 
 ### Affected Components
 
-[Which parts of the codebase are involved?]
+### Affected Components
 
+- `libminiupnpc-shared.cmake` – exports the incorrect `INTERFACE_INCLUDE_DIRECTORIES` value.
+- The CMake installation/export configuration for MiniUPnPc.
+- Haiku package integration, which expects headers to be available under the development headers directory.
 ---
 
 ## Reproduction Process
