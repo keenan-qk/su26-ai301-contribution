@@ -53,7 +53,7 @@ No issues setting up my local environment for this issue.
 
 ### Reproduction Evidence
 
-- **Commit showing reproduction:** [Link to commit in your fork]
+- **Commit showing reproduction:** [[Link to commit in your fork](https://github.com/keenan-qk/haikuports/tree/issue-13367-include-dir-fix)]
 - **Screenshots/logs:** []
 - **My findings:** [What you discovered during reproduction]
 
