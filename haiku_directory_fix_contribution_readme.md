@@ -1,4 +1,4 @@
-# Contribution [#]: [miniupnpc reports wrong path for $includeDir]
+# Contribution [2]: [miniupnpc reports wrong path for $includeDir]
 
 **Contribution Number:** [2]  
 **Student:** [Keenan Kornegay]  
@@ -40,18 +40,21 @@ The MiniUPnPc library is not imported and the correct path is reported.
 
 ### Environment Setup
 
-[Notes on setting up your local development environment - challenges you faced, how you solved them]
+No issues setting up my local environment for this issue.
 
 ### Steps to Reproduce
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Clone the Miniupnp git, build and install MiniUPnPc with CMake 
+2. Inspect the generated 'libminiupnpc-shared.cmake' file.
+3. Confirm that 'INTERFACE_INCLUDE_DIRECTORIES' contains '/boot/system/include/miniupnpc`.
+4. Create a small CMake project that imports MiniUPnPc using `find_package(miniupnpc REQUIRED)`.
+5. Run CMake and confirm that the import fails or reports the incorrect include directory.
+5. The generated CMake package exports `INTERFACE_INCLUDE_DIRECTORIES` as `${_IMPORT_PREFIX}/include/miniupnpc;${_IMPORT_PREFIX}/include`. On Haiku, this resolves to an incorrect include path, causing `find_package(miniupnpc)` consumers to fail to locate the library headers.
 
 ### Reproduction Evidence
 
 - **Commit showing reproduction:** [Link to commit in your fork]
-- **Screenshots/logs:** [If applicable]
+- **Screenshots/logs:** []
 - **My findings:** [What you discovered during reproduction]
 
 ---
